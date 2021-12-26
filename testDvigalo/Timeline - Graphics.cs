@@ -21,6 +21,7 @@ namespace testDvigalo
             TimeManager t;
             NewJob nj;
             JobPainter jp = new JobPainter();
+            JobCoordinator jc = new JobCoordinator();
 
             public MyGraphics(Form1 form, TimeManager t)
             {

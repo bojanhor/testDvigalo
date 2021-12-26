@@ -10,6 +10,7 @@ namespace testDvigalo
     class JobColector
     {
         public static List<Job> NewJobsList = new List<Job>();
+
     }
 
 
@@ -85,17 +86,17 @@ namespace testDvigalo
         void AddJob()
         {
             Job newJob = new Job();
-            SubJob newSubJob = new SubJob(form);
+            SubJob newSubJob = new SubJob(form, newJob);
 
             newSubJob.Duration = parse(formAddJob.tbDur1);
             newSubJob.GapToNext = parse(formAddJob.tbGap1);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = parse(formAddJob.tbDur2);
+            newSubJob = new SubJob(form, newJob); newSubJob.Duration = parse(formAddJob.tbDur2);
             newSubJob.GapToNext = parse(formAddJob.tbGap2);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = parse(formAddJob.tbDur3);
+            newSubJob = new SubJob(form, newJob); newSubJob.Duration = parse(formAddJob.tbDur3);
             newSubJob.GapToNext = parse(formAddJob.tbGap3);
             newJob.AddSubJobToLastPosition(newSubJob);
 
@@ -107,17 +108,17 @@ namespace testDvigalo
         {
             Thread.Sleep(900); // form load bug
             Job newJob = new Job();
-            SubJob newSubJob = new SubJob(form);
+            SubJob newSubJob = new SubJob(form, newJob);
 
             newSubJob.Duration = TimeSpan.FromSeconds(1000);
             newSubJob.GapToNext = TimeSpan.FromSeconds(100);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = TimeSpan.FromSeconds(500);
+            newSubJob = new SubJob(form, newJob); newSubJob.Duration = TimeSpan.FromSeconds(500);
             newSubJob.GapToNext = TimeSpan.FromSeconds(1500);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = TimeSpan.FromSeconds(10);
+            newSubJob = new SubJob(form, newJob); newSubJob.Duration = TimeSpan.FromSeconds(10);
             newSubJob.GapToNext = TimeSpan.FromSeconds(500);
             newJob.AddSubJobToLastPosition(newSubJob);
 
@@ -128,17 +129,17 @@ namespace testDvigalo
         {
             Thread.Sleep(1000);
             Job newJob = new Job();
-            SubJob newSubJob = new SubJob(form);
+            SubJob newSubJob = new SubJob(form, newJob);
 
             newSubJob.Duration = TimeSpan.FromSeconds(500);
             newSubJob.GapToNext = TimeSpan.FromSeconds(200);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = TimeSpan.FromSeconds(500);
+            newSubJob = new SubJob(form, newJob ); newSubJob.Duration = TimeSpan.FromSeconds(500);
             newSubJob.GapToNext = TimeSpan.FromSeconds(100);
             newJob.AddSubJobToLastPosition(newSubJob);
 
-            newSubJob = new SubJob(form); newSubJob.Duration = TimeSpan.FromSeconds(10);
+            newSubJob = new SubJob(form, newJob); newSubJob.Duration = TimeSpan.FromSeconds(10);
             newSubJob.GapToNext = TimeSpan.FromSeconds(1500);
             newJob.AddSubJobToLastPosition(newSubJob);
 
@@ -172,6 +173,7 @@ namespace testDvigalo
 
         void CoordinateMethod()
         {
+            
             var jl = JobColector.NewJobsList;
             Job job;
             List<SubJob> sjl = new List<SubJob>();
@@ -191,12 +193,24 @@ namespace testDvigalo
 
                 for (int i = 0; i < sjl.Count; i++)
                 {
-                    for (int j = 0; j < sjl.Count; j++)
+                    if (sjl[i].Left > 0 || sjl[i].Top > 0)
                     {
-                        // i je glavni subjob ki ga čekiramo z j
-                    }
-                }
+                        for (int j = i + 1; j < sjl.Count; j++)
+                        {
+                            if (sjl[j].Left > 0 || sjl[j].Top > 0)
+                            {
+                                if (sjl[i].DisplayRectangle.Contains(sjl[j].DisplayRectangle))
+                                {
+                                    Console.Beep();
+                                }
+                            }
 
+                        }
+                    }
+                    
+                }
+                sjl.Clear();
+                Thread.Sleep(100);
             }
         }
 

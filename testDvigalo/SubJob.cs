@@ -160,9 +160,10 @@ namespace testDvigalo
 
         }
 
-
-        public SubJob(Form form)
+        public Job Job { get; private set; }
+        public SubJob(Form form, Job job)
         {
+            Job = job;
             BackColor = Color.LightBlue;
             Paint += SubJob_Paint;
             MouseEnter += SubJob_MouseEnter;
