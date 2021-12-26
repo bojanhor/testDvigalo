@@ -199,10 +199,7 @@ namespace testDvigalo
                         {
                             if (sjl[j].Left > 0 || sjl[j].Top > 0)
                             {
-                                if (sjl[i].DisplayRectangle.Contains(sjl[j].DisplayRectangle))
-                                {
-                                    Console.Beep();
-                                }
+                                
                             }
 
                         }
@@ -213,6 +210,8 @@ namespace testDvigalo
                 Thread.Sleep(100);
             }
         }
+
+        
 
         
 

@@ -29,10 +29,9 @@ namespace testDvigalo
         public static Rectangle Rectangle { get; private set; }
 
         SolidBrush solidBrush = new SolidBrush(Color.DarkGray);
-        TimeManager t;
+        static TimeManager TimeManager;
 
-        private TimeSpan myTimelineDuration;
-
+       
         public TimeSpan MyTimelineDuration
         {
             get 
@@ -49,7 +48,7 @@ namespace testDvigalo
         public TimeLine(Form form, TimeManager t)
         {
             this.form = form;
-            this.t = t;
+            TimeManager = t;
 
             Top = 50;
             Left = 40;
@@ -71,8 +70,8 @@ namespace testDvigalo
             e.Graphics.FillRectangle(solidBrush, Rectangle);
             ratioPxPerMin = Width / Prog.timespan_m;
 
-            lblTimeNow.Text = t.GetCurrentTimeString();
-            lblTimeMax.Text = t.GetMaxTimeString();
+            lblTimeNow.Text = TimeManager.GetCurrentTimeString();
+            lblTimeMax.Text = TimeManager.GetMaxTimeString();
         }
       
 
@@ -83,6 +82,17 @@ namespace testDvigalo
             form.Controls.Add(lblTimeNow);
 
             form.Controls.Add(lblTimeMax);
+        }
+
+        public static DateTime GetDateTimeFromPx(Point point)
+        {
+           return GetDateTimeFromPx(point.X);
+        }
+
+        public static DateTime GetDateTimeFromPx(int Xpoint)
+        {
+            var span = TimeSpan.FromMinutes((double) (Xpoint / ratioPxPerMin));
+            return TimeManager.currentTime.Add(span);
         }
     }
         

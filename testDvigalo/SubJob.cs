@@ -97,7 +97,16 @@ namespace testDvigalo
                 {
                     if (notzero(duration))
                     {
-                        endTime = startTime.AddSeconds(duration.Seconds);
+                        endTime = startTime.AddSeconds(duration.Seconds);                        
+
+                        if (notzero(gapToNext))
+                        {
+                            endTimeWithGap = endTime + gapToNext;
+                        }
+                        else if (notzero(DurationWithGap))
+                        {
+                            endTimeWithGap = startTime + DurationWithGap;
+                        }
                     }
                 }
             }
@@ -117,11 +126,43 @@ namespace testDvigalo
                     if (notzero(duration))
                     {
                         startTime = endTime.AddSeconds(-duration.Seconds);
+
+                        if (notzero(DurationWithGap))
+                        {
+                            endTimeWithGap = startTime + DurationWithGap;
+                        }
+                        else if (notzero(gapToNext))
+                        {
+                            endTimeWithGap = endTime + gapToNext;
+                        }
                     }
                 }
             }
         }
         // ----------------------------
+
+        private DateTime endTimeWithGap;
+
+        public DateTime EndTimeWithGap
+        {
+            get { return endTimeWithGap; }
+            set
+            {
+                endTimeWithGap = value;
+
+                if (notzero(gapToNext))
+                {
+                    if (notzero(duration))
+                    {
+                        startTime = endTimeWithGap - gapToNext - duration;
+                    }
+                    
+                }
+                
+            }
+        }
+        // ----------------------------
+
 
         private TimeSpan gapToNext;
 
@@ -283,7 +324,7 @@ namespace testDvigalo
 
             if (notzero(duration))
             {
-                endTime = startTime.AddSeconds(duration.Seconds);
+                EndTime = startTime.AddSeconds(duration.Seconds);
                 Width = Misc.CalculatePxFromTime(duration);
             }
 
@@ -296,7 +337,7 @@ namespace testDvigalo
             {
                 if (notzero(duration))
                 {
-                    startTime = endTime.AddSeconds(-duration.Seconds);
+                    StartTime = endTime.AddSeconds(-duration.Seconds);
                     Width = Misc.CalculatePxFromTime(duration);
                 }
             }
@@ -382,7 +423,10 @@ namespace testDvigalo
                     Top = M.Bottom - (M.Height - Height) / 2;
                 }
 
-                
+                if (!hasPrevious)
+                {
+                    Job.SnappedTo = TimeLine.GetDateTimeFromPx(Left);
+                }
                 
 
             }

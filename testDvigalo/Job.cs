@@ -14,6 +14,16 @@ namespace testDvigalo
 
         public int Width { get; private set; }
         public int Height { get; private set; }
+        private DateTime snappedTo;
+        public DateTime SnappedTo
+        {
+            get { return snappedTo; }
+            set
+            {
+                snappedTo = value;
+                SnappedToChanged();
+            }
+        }
 
         public Job()
         {
@@ -42,6 +52,25 @@ namespace testDvigalo
         }
 
 
+        void SnappedToChanged()
+        {
+            SubJob buff;
+            for (int i = 0; i < SubJobList.Count; i++)
+            {
+                buff = SubJobList[i];
+
+                if (!buff.hasPrevious)
+                {
+                    buff.StartTime = snappedTo;
+                }
+
+                if (buff.hasNext)
+                {
+                    buff.NextSubJob.StartTime = buff.EndTimeWithGap;
+                }
+
+            }
+        }
 
         public void PaintSelf(Form form, PaintEventArgs e, int x, int y)
         {

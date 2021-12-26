@@ -10,6 +10,10 @@ namespace testDvigalo
         Thread currentTimeThread;
         string currentTimeString = "";
         string maxTimeString = "";
+
+        public DateTime currentTime { get; private set; }
+        public DateTime maxTime { get; private set; }
+
         Form1 form;
 
         public TimeManager(Form1 form)
@@ -40,8 +44,11 @@ namespace testDvigalo
         {
             while (true)
             {
-                currentTimeString = DateTime.Now.ToString("HH:mm:ss");
-                maxTimeString = (DateTime.Now + TimeSpan.FromMinutes((double)Prog.timespan_m)).ToString("HH:mm:ss");
+                currentTime = DateTime.Now;
+                maxTime = currentTime + TimeSpan.FromMinutes((double)Prog.timespan_m);
+
+                currentTimeString = currentTime.ToString("HH:mm:ss");
+                maxTimeString = maxTime.ToString("HH:mm:ss");
 
                 form.Invalidate();
                                

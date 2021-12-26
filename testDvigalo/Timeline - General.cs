@@ -16,7 +16,7 @@ namespace testDvigalo
 
         MyGraphics g;
         Form1 form;
-        TimeManager t;
+        public TimeManager t;
 
         public Prog(Form1 thisform)
         {
